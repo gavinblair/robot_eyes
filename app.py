@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify
 import os
 
 app = Flask(__name__)
-previous_expression = None
 
 def get_current_expression():
     with open('expression.txt', 'r') as file:
@@ -15,15 +14,9 @@ def index():
 
 @app.route('/get_expression')
 def get_expression():
-    global previous_expression
     current_expression = get_current_expression()
-
-    if current_expression != previous_expression:
-        previous_expression = current_expression
-        return jsonify({'changed': True, 'expression': current_expression})
-
-    return jsonify({'changed': False})
-
+    return current_expression
+    
 @app.route('/svg/<expression>')
 def get_svg(expression):
     svg_path = f'static/images/{expression}-robot-eyes.svg'
