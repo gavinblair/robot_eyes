@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <style>
+    .eye { fill: #3498db; }
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .eye { animation: blink 4s infinite; }
+    @keyframes tear-drop {
+      0%, 100% { transform: translateY(0); opacity: 0; }
+      50% { transform: translateY(20px); opacity: 1; }
+    }
+    .tear { animation: tear-drop 4s ease-in-out infinite; }
+  </style>
+  <path class="eye" d="M20,30 Q50,70 80,30" fill="none" stroke="#3498db" stroke-width="10" />
+  <path class="eye" d="M120,30 Q150,70 180,30" fill="none" stroke="#3498db" stroke-width="10" />
+  <circle class="tear" cx="50" cy="65" r="5" fill="#3498db" />
+  <circle class="tear" cx="150" cy="65" r="5" fill="#3498db" />
+</svg>

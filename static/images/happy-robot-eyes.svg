@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <style>
+    .eye { fill: #3498db; }
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .eye { animation: blink 4s infinite; }
+    @keyframes happy-movement {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    .happy-eye { animation: happy-movement 3s ease-in-out infinite; }
+  </style>
+  <g class="happy-eye">
+    <path class="eye" d="M20,60 Q50,40 80,60" stroke="#3498db" stroke-width="10" fill="none" />
+  </g>
+  <g class="happy-eye">
+    <path class="eye" d="M120,60 Q150,40 180,60" stroke="#3498db" stroke-width="10" fill="none" />
+  </g>
+</svg>

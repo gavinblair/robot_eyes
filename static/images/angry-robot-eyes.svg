@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <style>
+    .eye { fill: #e74c3c; }
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .eye { animation: blink 4s infinite; }
+    @keyframes eyebrow-twitch {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    .eyebrow { animation: eyebrow-twitch 2s ease-in-out infinite; }
+  </style>
+  <rect class="eye" x="20" y="30" width="60" height="50" rx="10">
+    <animate attributeName="height" dur="2s" repeatCount="indefinite"
+      values="50; 40; 50" calcMode="spline" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1"/>
+  </rect>
+  <rect class="eye" x="120" y="30" width="60" height="50" rx="10">
+    <animate attributeName="height" dur="2s" repeatCount="indefinite"
+      values="50; 40; 50" calcMode="spline" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1"/>
+  </rect>
+  <path class="eyebrow" d="M10,10 L80,30" stroke="#e74c3c" stroke-width="8" stroke-linecap="round"/>
+  <path class="eyebrow" d="M190,10 L120,30" stroke="#e74c3c" stroke-width="8" stroke-linecap="round"/>
+</svg>
