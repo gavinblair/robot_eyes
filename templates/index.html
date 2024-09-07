@@ -28,9 +28,7 @@
     <script>
         function checkExpression() {
             $.get('/get_expression', function(data) {
-                if (data.changed) {
-                    $('#robot-eyes').attr('data', "/svg/" + data.expression);
-                }
+                $('#robot-eyes').attr('data', "/svg/" + data);
             });
         }
 
