@@ -18,24 +18,54 @@ body {
     width: 300px;
     height: 150px;
 }
+button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
+
+<!-- SVG Robot Eyes Object -->
 <object id="robot-eyes" type="image/svg+xml" data="{{ url_for('get_svg', expression=expression) }}"></object>
+
+<!-- Button to enable speech -->
+<button id="enable-speech">Enable Speech</button>
+
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
 function checkSpeech() {
+    var synth = window.speechSynthesis;
+    var voices = synth.getVoices();
+
+    // Wait for voices to load if not available
+    if (voices.length === 0) {
+        synth.onvoiceschanged = checkSpeech;
+        return;
+    }
+
     $.get('/check_speech', function(data) {
         if (data && data.trim() !== "") {
-            // Web Speech API for Chrome TTS
-            var synth = window.speechSynthesis;
             var utterance = new SpeechSynthesisUtterance(data);
-            utterance.voice = synth.getVoices().filter(function(voice) { return voice.name === 'Joelle'; })[0];
+            utterance.voice = voices.filter(function(voice) { return voice.name === 'Joelle'; })[0];
             synth.speak(utterance);
         }
     });
 }
-setInterval(checkSpeech, 5000);  // Check every 5 seconds
+
+// Only start checking for speech after user interaction
+document.getElementById('enable-speech').addEventListener('click', function() {
+    setInterval(checkSpeech, 5000);  // Check every 5 seconds
+    this.style.display = 'none'; // Hide the button after enabling speech
+});
 </script>
+
 </body>
 </html>
