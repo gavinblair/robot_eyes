@@ -26,10 +26,10 @@ body {
 <script>
 function checkSpeech() {
     $.get('/check_speech', function(data) {
-        if (data && data.trim() !== "") {
+        if (data && data.speech && data.speech.trim() !== "") {
             // Web Speech API for Chrome TTS
             var synth = window.speechSynthesis;
-            var utterance = new SpeechSynthesisUtterance(data);
+            var utterance = new SpeechSynthesisUtterance(data.speech);
             utterance.voice = synth.getVoices().filter(function(voice) { return voice.name === 'Joelle'; })[0];
             synth.speak(utterance);
         }
