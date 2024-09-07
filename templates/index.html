@@ -13,32 +13,11 @@ body {
     margin: 0;
     background-color: #000;
 }
-
-#robot-eyes-container {
+#robot-eyes {
     margin-top: 30vh;
-    position: relative;
     width: 300px;
     height: 150px;
 }
-
-#robot-eyes {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    transition: opacity 1s ease-in-out; /* Fading animation */
-}
-
-.fade-out {
-    opacity: 0; /* Modify opacity for crossfade */
-}
-
-.fade-in {
-    opacity: 1; /* Modify opacity for crossfade */
-}
-
 button {
     position: absolute;
     top: 20px;
@@ -52,72 +31,26 @@ button {
 </head>
 <body>
 
-<!-- Container for Robot Eyes -->
-<div id="robot-eyes-container">
-    <object id="robot-eyes" type="image/svg+xml" data="{{ url_for('get_svg', expression=expression) }}"></object>
-</div>
+<!-- SVG Robot Eyes Object -->
+<object id="robot-eyes" type="image/svg+xml" data="{{ url_for('get_svg', expression=expression) }}"></object>
 
 <!-- Button to enable speech -->
 <button id="enable-speech">Enable Speech</button>
 
-<!-- jQuery for AJAX requests -->
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-
-// Function to load a new expression with a crossfade effect
-function crossfadeExpression(newExpressionUrl) {
-    var currentObject = $('#robot-eyes');
-    var newObject = $('<object>', {
-        id: 'new-robot-eyes',
-        class: 'fade-in', // Initial class for the new object
-        type: 'image/svg+xml',
-        data: newExpressionUrl,
-        css: {
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            opacity: '0' // Set opacity to 0 to prepare for crossfade
-        }
-    });
-
-    // Append the new SVG object to the container
-    $('#robot-eyes-container').append(newObject);
-
-    // Fade out the current object and fade in the new one
-    currentObject.addClass('fade-out');
-    setTimeout(function() {
-        currentObject.remove(); // Remove the old object after it's faded out
-        newObject.removeClass('fade-out').addClass('fade-in'); // Fade in the new object
-        newObject.attr('id', 'robot-eyes'); // Update id so we can use it for future transitions
-    }, 1000); // Ensure this matches the CSS transition time (1 second)
-}
-
-// Function to periodically check for a new expression
-function checkExpression() {
-    $.get('/get_expression', function(data) {
-        var newExpressionUrl = "/svg/" + data;
-        // Only change if the expression is different to avoid unnecessary transitions
-        if ($('#robot-eyes').attr('data') !== newExpressionUrl) {
-            crossfadeExpression(newExpressionUrl);
-        }
-    });
-}
-
-// Function to check and speak
 function checkSpeech() {
     var synth = window.speechSynthesis;
     var voices = synth.getVoices();
 
-    // If voices array is empty, wait for voices to load
+    // Wait for voices to load if not available
     if (voices.length === 0) {
         synth.onvoiceschanged = checkSpeech;
         return;
     }
 
-    // Check for new speech content
     $.get('/check_speech', function(data) {
         if (data && data.trim() !== "") {
             var utterance = new SpeechSynthesisUtterance(data);
@@ -127,15 +60,11 @@ function checkSpeech() {
     });
 }
 
-// Set interval to check for new expressions every 5 seconds
-setInterval(checkExpression, 5000);
-
-// Listen for button to enable speech
+// Only start checking for speech after user interaction
 document.getElementById('enable-speech').addEventListener('click', function() {
-    setInterval(checkSpeech, 5000);  // Start checking speech every 5 seconds
-    this.style.display = 'none'; // Hide the button after enabled
+    setInterval(checkSpeech, 5000);  // Check every 5 seconds
+    this.style.display = 'none'; // Hide the button after enabling speech
 });
-
 </script>
 
 </body>
