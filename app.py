@@ -45,7 +45,7 @@ def get_svg(expression):
 @app.route('/check_speech')
 def check_speech():
     speech_content = check_and_clear_speech_file()
-    return jsonify({"speech": speech_content})
+    return speech_content
 
 if __name__ == '__main__':
     app.run(debug=True)
